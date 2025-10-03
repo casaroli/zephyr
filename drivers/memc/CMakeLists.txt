@@ -20,6 +20,7 @@ zephyr_library_include_directories_ifdef(CONFIG_MEMC_MSPI ${ZEPHYR_BASE}/drivers
 
 zephyr_library_sources_ifdef(CONFIG_MEMC_NXP_S32_QSPI            memc_nxp_s32_qspi.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_RENESAS_RA_SDRAM        memc_renesas_ra_sdram.c)
+zephyr_library_sources_ifdef(CONFIG_MEMC_RP2350_PSRAM            memc_rp2350_qmi_psram.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_SAM_SMC                 memc_sam_smc.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_SILABS_SIWX91X_QSPI     memc_silabs_siwx91x_qspi.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_SMARTBOND               memc_smartbond_nor_psram.c)

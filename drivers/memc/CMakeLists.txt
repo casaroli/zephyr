@@ -11,7 +11,7 @@ zephyr_library_sources_ifdef(CONFIG_MEMC_MCUX_FLEXSPI_IS66WVQ8M4 memc_mcux_flexs
 zephyr_library_sources_ifdef(CONFIG_MEMC_MCUX_FLEXSPI_S27KS0641  memc_mcux_flexspi_s27ks0641.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_MCUX_FLEXSPI_W956A8MBYA memc_mcux_flexspi_w956a8mbya.c)
 if((DEFINED CONFIG_FLASH_MCUX_FLEXSPI_XIP) AND (DEFINED CONFIG_FLASH))
-  zephyr_code_relocate(FILES memc_mcux_flexspi.c LOCATION ${CONFIG_FLASH_MCUX_FLEXSPI_XIP_MEM}_TEXT)
+    zephyr_code_relocate(FILES memc_mcux_flexspi.c LOCATION ${CONFIG_FLASH_MCUX_FLEXSPI_XIP_MEM}_TEXT)
 endif()
 zephyr_library_sources_ifdef(CONFIG_MEMC_MCUX_XSPI memc_mcux_xspi.c)
 if((DEFINED CONFIG_FLASH_MCUX_XSPI_XIP) AND (DEFINED CONFIG_FLASH))
@@ -36,3 +36,6 @@ zephyr_library_sources_ifdef(CONFIG_MEMC_STM32_SDRAM             memc_stm32_sdra
 
 zephyr_library_sources_ifdef(CONFIG_MEMC_STM32_XSPI_PSRAM        memc_stm32_xspi_psram.c)
 zephyr_library_sources_ifdef(CONFIG_MEMC_STM32_OSPI_PSRAM        memc_stm32_ospi_psram.c)
+zephyr_library_sources_ifdef(CONFIG_MEMC_RP2350_PSRAM            memc_rp2350_qmi_psram.c)
+zephyr_linker_sources_ifdef(CONFIG_MEMC_RP2350_PSRAM SECTIONS memc_rp2350_qmi_psram.ld)
+

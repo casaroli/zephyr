@@ -48,4 +48,10 @@
 			input-enable;
 		};
 	};
+
+	psram_default: psram_default {
+		group1 {
+			pinmux = <QMI_CS1_P47>;
+		};
+	};
 };

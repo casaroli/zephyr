@@ -1,0 +1,6 @@
+config MEMC_RP2350_PSRAM
+	bool "RP2350 external PSRAM"
+	default y if BOARD_PICO_PLUS2
+	help
+	  This enables support for an external SPI PSRAM chip, connected in
+	  parallel with the main SPI flash chip.

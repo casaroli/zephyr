@@ -193,6 +193,8 @@
 #define UART0_TX_P46 RP2XXX_PINMUX(46, RP2_PINCTRL_GPIO_FUNC_UART_ALT)
 #define UART0_RX_P47 RP2XXX_PINMUX(47, RP2_PINCTRL_GPIO_FUNC_UART_ALT)
 
+#define QMI_CS1_P47 RP2XXX_PINMUX(47, RP2_PINCTRL_GPIO_FUNC_GPCK)
+
 /* ADC channel allocations differ between the RP2350A and RP2350B.
  * Refer to Table 1116 in the datasheet.
  */

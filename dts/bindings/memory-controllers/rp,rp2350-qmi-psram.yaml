@@ -1,0 +1,174 @@
+# Copyright (c) 2025 Marco Casaroli
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  RP2350 QSPI PSRAM.
+
+compatible: "raspberrypi,rp2350-qmi-psram"
+
+include:
+  - base.yaml
+  - zephyr,memory-region.yaml
+  - pinctrl-device.yaml
+
+properties:
+  max-frequency:
+    type: int
+    required: true
+    description: Maximum clock frequency of device's QSPI interface in Hz
+
+  cooldown:
+    type: int
+    required: true
+    enum:
+      - 0
+      - 1
+      - 2
+      - 3
+
+  pagebreak:
+    type: int
+    default: 5
+    description: |
+      Pagebreak value
+      - 0x0 -> NONE: No page boundary is enforced
+      - 0x1 -> 256: Break bursts crossing a 256-byte page boundary
+      - 0x2 -> 1024: Break bursts crossing a 1024-byte quad-page boundary
+      - 0x3 -> 4096: Break bursts crossing a 4096-byte sector boundary
+    enum:
+      - 0
+      - 1
+      - 2
+      - 3
+
+  select-setup:
+    type: int
+    default: 0
+    enum:
+      - 0
+      - 1
+
+  select-hold:
+    type: int
+    default: 0
+    enum:
+      - 0
+      - 1
+      - 2
+      - 3
+
+  max-select:
+    type: int
+    required: true
+
+  min-deselect:
+    type: int
+    required: true
+
+  rxdelay:
+    type: int
+    required: true
+
+  clkdiv:
+    type: int
+    required: true
+
+child-binding:
+  description: read or write configuration
+  properties:
+    dtr:
+      type: int
+      default: 0
+      enum:
+        - 0
+        - 1
+
+    dummy_len:
+      type: int
+      default: 0x0
+      description: |
+        - 0x0 -> NONE: No dummy phase
+        - 0x1 -> 4: 4 dummy bits
+        - 0x2 -> 8: 8 dummy bits
+        - 0x3 -> 12: 12 dummy bits
+        - 0x4 -> 16: 16 dummy bits
+        - 0x5 -> 20: 20 dummy bits
+        - 0x6 -> 24: 24 dummy bits
+        - 0x7 -> 28: 28 dummy bits
+      enum:
+        - 0x0
+        - 0x1
+        - 0x2
+        - 0x3
+        - 0x4
+        - 0x5
+        - 0x6
+        - 0x7
+
+    suffix_len:
+      type: int
+      default: 0x0
+      description: |
+        - 0x0 -> NONE: No suffix
+        - 0x2 -> 8: 8-bit suffix
+      enum:
+        - 0x0
+        - 0x2
+
+    prefix_len:
+      type: int
+      default: 0x0
+      description: |
+        - 0x0 -> NONE: No prefix
+        - 0x1 -> 8: 8-bit prefix
+      enum:
+        - 0x0
+        - 0x1
+
+    data_width:
+      type: int
+      required: true
+      description: |
+        - 0x0 -> S: Single width
+        - 0x1 -> D: Dual width
+        - 0x2 -> Q: Quad width
+
+    dummy_width:
+      type: int
+      required: true
+      description: |
+        - 0x0 -> S: Single width
+        - 0x1 -> D: Dual width
+        - 0x2 -> Q: Quad width
+
+    suffix_width:
+      type: int
+      required: true
+      description: |
+        - 0x0 -> S: Single width
+        - 0x1 -> D: Dual width
+        - 0x2 -> Q: Quad width
+
+    addr_width:
+      type: int
+      required: true
+      description: |
+        - 0x0 -> S: Single width
+        - 0x1 -> D: Dual width
+        - 0x2 -> Q: Quad width
+
+    prefix_width:
+      type: int
+      required: true
+      description: |
+        - 0x0 -> S: Single width
+        - 0x1 -> D: Dual width
+        - 0x2 -> Q: Quad width
+
+    suffix:
+      type: int
+      default: 0x00
+
+    prefix:
+      type: int
+      default: 0x00

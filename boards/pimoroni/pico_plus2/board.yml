@@ -7,3 +7,8 @@ board:
       variants:
         - name: w
           cpucluster: m33
+          variants:
+            - name: mcuboot
+              cpucluster: m33
+        - name: mcuboot
+          cpucluster: m33

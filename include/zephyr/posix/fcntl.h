@@ -25,12 +25,15 @@
 #define F_GETFL ZVFS_F_GETFL
 #define F_SETFL ZVFS_F_SETFL
 
+#define AT_FDCWD -100
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 int open(const char *name, int flags, ...);
 int fcntl(int fildes, int cmd, ...);
+int openat(int dirfd, const char *path, int flags, ...);
 
 #ifdef __cplusplus
 }

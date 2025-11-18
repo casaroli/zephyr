@@ -535,3 +535,53 @@ int dirfd(DIR *dirp) {
 	return zvfs_alloc_fd(dirp, &dirp_fd_vtable);
 }
 
+int openat(int dirfd, const char *path, int flags, ...) {
+   	int mode = 0;
+	va_list args;
+
+	if (path == NULL) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	struct posix_fs_desc *dir = zvfs_get_fd_obj(dirfd, &dirp_fd_vtable, ENOTDIR);
+	if (dir == NULL) {
+	    errno = EINVAL;
+		return -1;
+	}
+
+	if (dir->is_dir == false) {
+	    errno = ENOTDIR;
+		return -1;
+	}
+
+	// printf("DIR IS %s\n", dir->d_name);
+
+    if ((flags & O_CREAT) != 0) {
+        va_start(args, flags);
+        mode = va_arg(args, int);
+        va_end(args);
+    }
+
+	char abs_path[MAX_FILE_NAME + 1];
+	memset(abs_path, 0, MAX_FILE_NAME + 1);
+
+	if (dirfd == AT_FDCWD || path[0] == '/') {
+	    strncpy(abs_path, path, MAX_FILE_NAME);
+	}
+	else {
+		// Dead end!!! how do we get the directory path from the dir structure?
+		// snprintf(abs_path, MAX_FILE_NAME, "%s/%s", dir->d_name, path);
+	}
+
+
+    return open(abs_path, flags, mode);
+
+
+	printk("asdas\n");
+	return -1;
+	// return zvfs_open(name, flags, mode);
+}
+
+// int openat2(int dirfd, const char *path,
+//            const struct open_how *how, size_t size);

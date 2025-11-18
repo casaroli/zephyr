@@ -30,6 +30,15 @@ static struct fs_mount_t fatfs_mnt = {
 	.fs_data = &fat_fs,
 };
 #endif
+/* tmpfs */
+#ifdef CONFIG_FILE_SYSTEM_TMPFS
+// FATFS fat_fs;
+/* mounting info */
+static struct fs_mount_t tmpfs_mnt = {
+	.type = FS_TMPFS,
+	// .fs_data = &fat_fs,
+};
+#endif
 /* LITTLEFS */
 #ifdef CONFIG_FILE_SYSTEM_LITTLEFS
 #include <zephyr/fs/littlefs.h>
@@ -896,6 +905,35 @@ static int cmd_mount_littlefs(const struct shell *sh, size_t argc, char **argv)
 }
 #endif
 
+#if defined(CONFIG_FILE_SYSTEM_TMPFS)
+static int cmd_mount_tmpfs(const struct shell *sh, size_t argc, char **argv)
+{
+	if (tmpfs_mnt.mnt_point != NULL) {
+		return -EBUSY;
+	}
+
+	char *mntpt = mntpt_prepare(argv[1]);
+
+	if (mntpt == NULL) {
+		shell_error(sh, "Failed to allocate mount point");
+		return -EIO;
+	}
+
+	tmpfs_mnt.mnt_point = mntpt;
+
+	int rc = fs_mount(&tmpfs_mnt);
+
+	if (rc != 0) {
+		shell_error(sh, "Error mounting as tmpfs: %d", rc);
+		k_free((void *)tmpfs_mnt.mnt_point);
+		tmpfs_mnt.mnt_point = NULL;
+		return -EIO;
+	}
+
+	return rc;
+}
+#endif
+
 SHELL_STATIC_SUBCMD_SET_CREATE(sub_fs_mount,
 #if defined(CONFIG_FAT_FILESYSTEM_ELM)
 	SHELL_CMD_ARG(fat, NULL,
@@ -907,6 +945,12 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_fs_mount,
 	SHELL_CMD_ARG(littlefs, NULL,
 		      "Mount littlefs. fs mount littlefs <mount-point>",
 		      cmd_mount_littlefs, 2, 0),
+#endif
+
+#if defined(CONFIG_FILE_SYSTEM_TMPFS)
+	SHELL_CMD_ARG(tmpfs, NULL,
+		      "Mount tmpfs. fs mount tmpfs <mount-point>",
+		      cmd_mount_tmpfs, 2, 0),
 #endif
 
 	SHELL_SUBCMD_SET_END

@@ -179,7 +179,7 @@ void *zvfs_get_fd_obj(int fd, const struct fd_op_vtable *vtable, int err)
 	return entry->obj;
 }
 
-static int z_get_fd_by_obj_and_vtable(void *obj, const struct fd_op_vtable *vtable)
+int zvfs_get_fd_by_obj_and_vtable(void *obj, const struct fd_op_vtable *vtable)
 {
 	int fd;
 
@@ -199,7 +199,7 @@ bool zvfs_get_obj_lock_and_cond(void *obj, const struct fd_op_vtable *vtable, st
 	int fd;
 	struct fd_entry *entry;
 
-	fd = z_get_fd_by_obj_and_vtable(obj, vtable);
+	fd = zvfs_get_fd_by_obj_and_vtable(obj, vtable);
 	if (_check_fd(fd) < 0) {
 		return false;
 	}

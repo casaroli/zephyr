@@ -194,6 +194,16 @@ void *zvfs_get_fd_obj_and_vtable(int fd, const struct fd_op_vtable **vtable,
 			      struct k_mutex **lock);
 
 /**
+ * @brief Get file descriptor from object and vtable pointers.
+ *
+ * @param obj Pointer to I/O object structure previously stored with zvfs_finalize_fd
+ * @param vtable Expected object vtable
+ *
+ * @return File descriptor or -1, with errno set
+ */
+int zvfs_get_fd_by_obj_and_vtable(void *obj, const struct fd_op_vtable *vtable);
+
+/**
  * @brief Get the mutex and condition variable associated with the given object and vtable.
  *
  * @param obj Object previously returned by a call to e.g. @ref zvfs_get_fd_obj.

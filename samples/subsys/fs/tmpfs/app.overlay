@@ -1,0 +1,9 @@
+/ {
+	fstab {
+		tmpfs {
+			compatible = "zephyr,fstab,tmpfs";
+			automount;
+			mount-point = "/tmp2";
+		};
+	};
+};

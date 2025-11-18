@@ -61,7 +61,7 @@ if FILE_SYSTEM_SHELL
 
 config FILE_SYSTEM_SHELL_MOUNT_COMMAND
 	bool "File system shell mount command"
-	depends on FAT_FILESYSTEM_ELM || FILE_SYSTEM_LITTLEFS
+	depends on FAT_FILESYSTEM_ELM || FILE_SYSTEM_LITTLEFS || FILE_SYSTEM_TMPFS
 	depends on HEAP_MEM_POOL_SIZE > 0
 	default y
 	help

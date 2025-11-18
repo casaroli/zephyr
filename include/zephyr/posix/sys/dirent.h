@@ -28,6 +28,8 @@ struct dirent {
 	char d_name[NAME_MAX + 1];
 };
 
+int dirfd(DIR *dirp);
+
 #ifdef __cplusplus
 }
 #endif

@@ -225,6 +225,41 @@ static int fs_ioctl_vmeth(void *obj, unsigned int request, va_list args)
 	return rc;
 }
 
+static int fs_dir_ioctl_vmeth(void *obj, unsigned int request, va_list args)
+{
+	int rc = 0;
+	struct posix_fs_desc *ptr = obj;
+
+	switch (request) {
+	case ZFD_IOCTL_STAT: {
+		struct stat *buf = va_arg(args, struct stat *);
+		memset(buf, 0, sizeof(struct stat));
+
+		// buf->st_size = current;
+		buf->st_mode = S_IFDIR;
+		break;
+	}
+	case ZFD_IOCTL_FSYNC: {
+		rc = fs_sync(&ptr->file);
+		break;
+	}
+	case ZFD_IOCTL_LSEEK: {
+	    errno = EISDIR;
+		return -1;
+	}
+	default:
+		errno = EOPNOTSUPP;
+		return -1;
+	}
+
+	if (rc < 0) {
+		errno = -rc;
+		return -1;
+	}
+
+	return rc;
+}
+
 /**
  * @brief Write to a file.
  *
@@ -270,6 +305,10 @@ static struct fd_op_vtable fs_fd_op_vtable = {
 	.ioctl = fs_ioctl_vmeth,
 };
 
+static const struct fd_op_vtable dirp_fd_vtable = {
+    .ioctl = fs_dir_ioctl_vmeth,
+};
+
 /**
  * @brief Open a directory stream.
  *
@@ -306,11 +345,18 @@ DIR *opendir(const char *dirname)
 int closedir(DIR *dirp)
 {
 	int rc;
+	int fd;
 	struct posix_fs_desc *ptr = dirp;
 
 	if (dirp == NULL) {
 		errno = EBADF;
 		return -1;
+	}
+
+	fd = zvfs_get_fd_by_obj_and_vtable(dirp, &dirp_fd_vtable);
+
+	if (fd != -1) {
+		zvfs_free_fd(fd);
 	}
 
 	rc = fs_closedir(&ptr->dir);
@@ -484,3 +530,8 @@ int rmdir(const char *path)
 {
 	return unlink(path);
 }
+
+int dirfd(DIR *dirp) {
+	return zvfs_alloc_fd(dirp, &dirp_fd_vtable);
+}
+

@@ -75,6 +75,11 @@ static int flash_rpi_write(const struct device *dev, off_t offset, const void *d
 
 	key = irq_lock();
 
+	volatile uint32_t index = 0;
+
+	for (index = (4000); index != 0; index--) {
+	}
+
 	if ((offset & (PAGE_SIZE - 1)) > 0) {
 		bytes_to_write = MIN(PAGE_SIZE - (offset & (PAGE_SIZE - 1)), size);
 		memcpy(flash_ram_buffer, data_pointer, bytes_to_write);
@@ -96,6 +101,10 @@ static int flash_rpi_write(const struct device *dev, off_t offset, const void *d
 	if (size > 0) {
 		memcpy(flash_ram_buffer, data_pointer, size);
 		flash_write_partial(offset, flash_ram_buffer, size);
+	}
+
+	index = 0;
+	for (index = (4000); index != 0; index--) {
 	}
 
 	irq_unlock(key);

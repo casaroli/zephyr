@@ -1311,6 +1311,9 @@ DT_INST_FOREACH_STATUS_OKAY(DEFINE_FS);
 
 #ifdef CONFIG_TMPFS_FSTAB_AUTOMOUNT
 #define REFERENCE_MOUNT(inst) (&FS_FSTAB_ENTRY(DT_DRV_INST(inst))),
+#endif /* CONFIG_EXT2_FSTAB_AUTOMOUNT */
+
+#if defined(CONFIG_TMPFS_TMP_AUTOMOUNT) || defined(CONFIG_TMPFS_FSTAB_AUTOMOUNT)
 
 static void automount_if_enabled(struct fs_mount_t *mountp)
 {
@@ -1325,7 +1328,7 @@ static void automount_if_enabled(struct fs_mount_t *mountp)
 		}
 	}
 }
-#endif /* CONFIG_EXT2_FSTAB_AUTOMOUNT */
+#endif /* defined(CONFIG_TMPFS_TMP_AUTOMOUNT) || defined(CONFIG_TMPFS_FSTAB_AUTOMOUNT) */
 
 #ifdef CONFIG_TMPFS_TMP_AUTOMOUNT
 static struct fs_mount_t tmpfs_mount = {

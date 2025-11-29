@@ -1,0 +1,25 @@
+//#include <raspberrypi/partitions_4M_sysbuild.dtsi>
+//
+/// {
+//	chosen {
+//		zephyr,code-partition = &slot0_partition;
+//	};
+//};
+//
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+//  	user_data_partition: partition@400000 {
+//  		label = "user-data";
+//  		reg = <0x00400000 0x00400000>;
+//  	};
+  	user_data_partition: storage_partition: partition@600000 {
+  		label = "storage";
+//  		reg = <0x00600000 0x00200000>;
+        reg = <0x410000 0x800000>;
+  	};
+	};
+};
